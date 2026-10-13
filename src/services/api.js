@@ -1,9 +1,15 @@
 import axios from 'axios';
 
-const rawBaseUrl = import.meta.env.VITE_API_BASE_URL ||
+let rawBaseUrl = import.meta.env.VITE_API_BASE_URL ||
   (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')
     ? 'https://backend-hbwv.onrender.com/api'
     : '/api');
+
+// Auto-correct typo from Vercel environment variable (hbww -> hbwv)
+if (typeof rawBaseUrl === 'string' && rawBaseUrl.includes('backend-hbww.onrender.com')) {
+  rawBaseUrl = rawBaseUrl.replace('backend-hbww.onrender.com', 'backend-hbwv.onrender.com');
+}
+
 const API_BASE_URL = rawBaseUrl.endsWith('/') ? rawBaseUrl.slice(0, -1) : rawBaseUrl;
 
 const api = axios.create({

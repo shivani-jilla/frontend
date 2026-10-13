@@ -39,7 +39,7 @@ const Login = () => {
     } catch (err) {
       const errorMsg = err.response?.data?.message 
         || (err.code === 'ERR_NETWORK' || !err.response 
-            ? 'Unable to connect to the backend server. Please check your network or server status.' 
+            ? 'Unable to connect to the backend server. The Render service may be waking up (takes ~30-50s on free tier). Please wait a moment and try again.' 
             : 'Invalid email or password.');
       setError(errorMsg);
     } finally {

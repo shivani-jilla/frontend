@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       return err.response.data.message;
     }
     if (err.code === 'ERR_NETWORK' || !err.response) {
-      return 'Unable to reach backend server. Please verify the API is running and reachable.';
+      return 'Unable to reach backend server. If Render backend was asleep, please wait 30 seconds for it to spin up and try again.';
     }
     return fallback;
   };
