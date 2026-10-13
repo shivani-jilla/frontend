@@ -49,7 +49,7 @@ const Footer = () => {
               <li><Link to="/dashboard" className="text-decoration-none text-muted">Student Portal</Link></li>
               <li><Link to="/instructor" className="text-decoration-none text-muted">Instructor Portal</Link></li>
               <li><Link to="/admin" className="text-decoration-none text-muted">Admin Console</Link></li>
-              <li><a href="http://localhost:8080/swagger-ui.html" target="_blank" rel="noreferrer" className="text-decoration-none text-muted">API Docs (Swagger)</a></li>
+              <li><a href="/swagger-ui.html" target="_blank" rel="noreferrer" className="text-decoration-none text-muted">API Docs (Swagger)</a></li>
             </ul>
           </div>
 

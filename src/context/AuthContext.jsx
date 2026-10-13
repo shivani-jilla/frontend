@@ -42,6 +42,23 @@ export const AuthProvider = ({ children }) => {
     verifyAuth();
   }, []);
 
+  const getErrorMessage = (err, fallback) => {
+    if (err.response?.data?.details) {
+      const details = err.response.data.details;
+      if (typeof details === 'object') {
+        const first = Object.values(details)[0];
+        if (first) return first;
+      }
+    }
+    if (err.response?.data?.message) {
+      return err.response.data.message;
+    }
+    if (err.code === 'ERR_NETWORK' || !err.response) {
+      return 'Unable to reach backend server. Please verify the API is running and reachable.';
+    }
+    return fallback;
+  };
+
   const login = async (email, password) => {
     try {
       const data = await authService.login(email, password);
@@ -50,7 +67,7 @@ export const AuthProvider = ({ children }) => {
       addToast(`Welcome back, ${data.user.name}!`, 'success');
       return data;
     } catch (err) {
-      const errorMsg = err.response?.data?.message || 'Login failed. Please check your credentials.';
+      const errorMsg = getErrorMessage(err, 'Login failed. Please check your credentials.');
       addToast(errorMsg, 'error');
       throw err;
     }
@@ -64,7 +81,7 @@ export const AuthProvider = ({ children }) => {
       addToast('Registration successful! Welcome to LearnHub.', 'success');
       return data;
     } catch (err) {
-      const errorMsg = err.response?.data?.message || 'Registration failed.';
+      const errorMsg = getErrorMessage(err, 'Registration failed. Please check your input.');
       addToast(errorMsg, 'error');
       throw err;
     }

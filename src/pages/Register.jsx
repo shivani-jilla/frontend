@@ -40,7 +40,14 @@ const Register = () => {
         navigate('/dashboard', { replace: true });
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      const details = err.response?.data?.details;
+      const firstDetail = details && typeof details === 'object' ? Object.values(details)[0] : null;
+      const errorMsg = firstDetail 
+        || err.response?.data?.message 
+        || (err.code === 'ERR_NETWORK' || !err.response 
+            ? 'Unable to connect to the backend server. Please check your network or server status.' 
+            : 'Registration failed. Please try again.');
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }

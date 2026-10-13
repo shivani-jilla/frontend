@@ -37,7 +37,11 @@ const Login = () => {
         navigate('/dashboard', { replace: true });
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Invalid email or password.');
+      const errorMsg = err.response?.data?.message 
+        || (err.code === 'ERR_NETWORK' || !err.response 
+            ? 'Unable to connect to the backend server. Please check your network or server status.' 
+            : 'Invalid email or password.');
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }

@@ -19,7 +19,12 @@ export const fileService = {
     if (path.startsWith('http://') || path.startsWith('https://')) {
       return path;
     }
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
-    return `${baseUrl}/files/${path}`;
+    const rawBaseUrl = import.meta.env.VITE_API_BASE_URL ||
+      (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')
+        ? 'https://backend-hbwv.onrender.com/api'
+        : '/api');
+    const baseUrl = rawBaseUrl.endsWith('/') ? rawBaseUrl.slice(0, -1) : rawBaseUrl;
+    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+    return `${baseUrl}/files/${cleanPath}`;
   },
 };
