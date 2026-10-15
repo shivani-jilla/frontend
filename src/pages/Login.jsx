@@ -37,9 +37,10 @@ const Login = () => {
         navigate('/dashboard', { replace: true });
       }
     } catch (err) {
+      const isConnectionIssue = err.code === 'ERR_NETWORK' || err.code === 'ECONNABORTED' || !err.response;
       const errorMsg = err.response?.data?.message 
-        || (err.code === 'ERR_NETWORK' || !err.response 
-            ? 'Unable to connect to the backend server. The Render service may be waking up (takes ~30-50s on free tier). Please wait a moment and try again.' 
+        || (isConnectionIssue 
+            ? 'Unable to connect to the backend server. Please verify your backend server is running on port 8080 (or wait if waking up from cloud sleep).' 
             : 'Invalid email or password.');
       setError(errorMsg);
     } finally {
@@ -125,6 +126,11 @@ const Login = () => {
               'Sign In to LearnHub'
             )}
           </button>
+          {loading && (
+            <p className="text-muted small text-center mt-n3 mb-3">
+              <i className="bi bi-cloud-arrow-up me-1"></i>Connecting to server... (may take ~30s if cloud service is waking up)
+            </p>
+          )}
         </form>
 
         {/* Demo Accounts Quick-Fill Section */}

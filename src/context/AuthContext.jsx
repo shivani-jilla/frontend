@@ -53,8 +53,8 @@ export const AuthProvider = ({ children }) => {
     if (err.response?.data?.message) {
       return err.response.data.message;
     }
-    if (err.code === 'ERR_NETWORK' || !err.response) {
-      return 'Unable to reach backend server. If Render backend was asleep, please wait 30 seconds for it to spin up and try again.';
+    if (err.code === 'ERR_NETWORK' || err.code === 'ECONNABORTED' || !err.response) {
+      return 'Unable to reach backend server. Please verify your backend server is running on port 8080 (or wait if waking up from cloud sleep).';
     }
     return fallback;
   };
